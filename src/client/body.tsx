@@ -24,7 +24,7 @@ interface Props {
 }
 
 export const App: React.FunctionComponent = () => {
-  const [data, setData] = useState<Data[]>([,]);
+  const [data, setData] = useState<Data[]>([]);
   useEffect(() => {
     const fetch = async (): Promise<void> => {
       const result = await axios.get(
