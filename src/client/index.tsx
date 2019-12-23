@@ -1,5 +1,5 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
-import { App } from "./body";
+import { App } from "./templates/body";
 
 ReactDOM.render(<App />, document.getElementById("index"));
