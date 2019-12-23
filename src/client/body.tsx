@@ -35,6 +35,11 @@ export const App: React.FunctionComponent = () => {
     fetch();
   }, []);
 
+  const standardPressure = 1013;
+  const pressureList = data.map(({ pressure }) => pressure);
+  const minPressure = Math.min(standardPressure, ...pressureList);
+  const maxPressure = Math.max(standardPressure, ...pressureList);
+
   return (
     <>
       <h1>今日のちゃおハウス</h1>
@@ -70,9 +75,9 @@ export const App: React.FunctionComponent = () => {
         <LineChart data={data} syncId="chao">
           <Line type="monotone" dataKey="pressure" />
           <XAxis dataKey="time" interval={59} />
-          <YAxis domain={["dataMin", "dataMax"]} />
+          <YAxis domain={[minPressure, maxPressure]} />
           <CartesianGrid />
-          <ReferenceLine y={1013} label="標準気圧" />
+          <ReferenceLine y={standardPressure} label="標準気圧" />
           <Tooltip />
         </LineChart>
       </ResponsiveContainer>
