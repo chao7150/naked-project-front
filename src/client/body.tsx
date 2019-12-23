@@ -24,13 +24,13 @@ interface Props {
 }
 
 export const App: React.FunctionComponent = () => {
-  const [data, setData] = useState([,] as Data[]);
+  const [data, setData] = useState<Data[]>([,]);
   useEffect(() => {
     const fetch = async (): Promise<void> => {
       const result = await axios.get(
         "https://gyokuro.chao.tokyo/api/temperature",
       );
-      setData(result.data.data);
+      setData(result.data.data as Data[]);
     };
     fetch();
   }, []);
