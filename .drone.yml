@@ -31,17 +31,13 @@ clone:
   disable: true
 
 steps:
-  - name: hello
-    commands:
-      - cd /home/satoru/work
-      - touch hello
   - name: pull
     commands:
       - cd /home/satoru/work/house-temperature-web
       - git pull origin master
   - name: stop old container
     commands:
-      - if [ "`docker ps | grep 'house-temperature-web'`" ]; then docker rm -f house-temperature-web;fi
+      - if [ "$(docker ps | grep 'house-temperature-web')" ]; then docker rm -f house-temperature-web;fi
   - name: build and deploy
     depends_on:
       - pull
