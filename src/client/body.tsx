@@ -36,15 +36,9 @@ export const App: React.FunctionComponent = () => {
   }, []);
 
   const standardPressure = 1013;
-  const [minPressure, maxPressure] = data
-    .map(({ pressure }) => pressure)
-    .reduce(
-      (prev, current) => {
-        const [min, max] = prev;
-        return [Math.min(min, current), Math.max(max, current)];
-      },
-      [standardPressure, standardPressure],
-    );
+  const pressureList = data.map(({ pressure }) => pressure);
+  const minPressure = Math.min(standardPressure, ...pressureList);
+  const maxPressure = Math.max(standardPressure, ...pressureList);
 
   return (
     <>
