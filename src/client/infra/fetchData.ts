@@ -7,7 +7,6 @@ export async function fetchByDate<T>(
 ): Promise<AxiosResponse<T>> {
   // TODO: パスの作り方を考える
   const url = new URL(`${API_ENDPOINT}/${date.format("YYYY/MM/DD")}`, API_HOST);
-  console.log(url);
   return axios.get<T>(url.href);
 }
 
