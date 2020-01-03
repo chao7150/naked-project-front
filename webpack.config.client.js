@@ -2,12 +2,12 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
-  template: "./src/client/index.html",
+  template: "./src/client/ui/index.html",
   filename: "./index.html"
 });
 
 module.exports = {
-  entry: "./src/client/index.tsx",
+  entry: "./src/client/ui/index.tsx",
   devtool: "source-map",
   target: "web",
   output: {
