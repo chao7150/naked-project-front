@@ -10,12 +10,12 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
-import { Data } from "../consts/Data";
+import { WeatherData } from "../../domain/WeatherData";
 
 export interface GraphContainerProps {
   title: string;
-  data: Data[];
-  dataKey: keyof Data;
+  data: WeatherData[];
+  dataKey: keyof WeatherData;
   domain: [number, number];
   referenceProps?: ReferenceLineProps;
 }

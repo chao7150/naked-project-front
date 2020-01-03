@@ -2,18 +2,21 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { GraphContainer } from "../organisms/GraphContainer";
-import { Data } from "../consts/Data";
+import { WeatherData } from "../../domain/WeatherData";
 import { Header } from "../organisms/Header";
+import * as moment from "moment-timezone";
+import { fetchTodayAndYesterday } from "../../infra/fetchData";
 
 export const App: React.FunctionComponent = () => {
-  const [data, setData] = useState<Data[]>([]);
+  const [data, setData] = useState<WeatherData[]>([]);
   useEffect(() => {
     const fetch = async (): Promise<void> => {
-      // API叩く処理がUIの中にあるのはなんか気持ち悪い
-      const result = await axios.get(
-        "https://gyokuro.chao.tokyo/api/temperature",
-      );
-      setData(result.data.data as Data[]);
+      const [yesterdayResult, todayResult] = (
+        await fetchTodayAndYesterday<{ data: WeatherData[] }>(
+          moment().tz("Asia/Tokyo"),
+        )
+      ).map(raw => raw.data.data);
+      setData([...yesterdayResult, ...todayResult].slice(-12 * 24));
     };
     fetch();
     setInterval(fetch, 10 * 1000);

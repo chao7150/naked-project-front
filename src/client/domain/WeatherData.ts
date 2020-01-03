@@ -1,4 +1,4 @@
-export interface Data {
+export interface WeatherData {
   time: string;
   temperature: number;
   humidity: number;
