@@ -16,6 +16,7 @@ export const App: React.FunctionComponent = () => {
       setData(result.data.data as Data[]);
     };
     fetch();
+    setInterval(fetch, 10 * 1000);
   }, []);
 
   const standardPressure = 1013;
