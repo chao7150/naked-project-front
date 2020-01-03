@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { GraphContainer } from "../organisms/GraphContainer";
 import { WeatherData } from "../../domain/WeatherData";
 import { Header } from "../organisms/Header";
