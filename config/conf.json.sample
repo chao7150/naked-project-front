@@ -1,0 +1,6 @@
+{
+  "clientId": "hoge",
+  "clientSecret": "hoge",
+  "redirectUri": "hoge",
+  "code": "hoge",
+}

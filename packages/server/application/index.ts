@@ -1,6 +1,7 @@
-import * as express from "express";
-import * as path from "path";
+import express from "express";
+import path from "path";
 import compression from "compression";
+import { router as spotify } from "./api/nowPlaying";
 
 const app = express();
 
@@ -12,4 +13,5 @@ app.get("/", (req, res) => {
   };
   res.sendFile("index.html", options);
 });
+app.use("/api/nowPlaying", spotify);
 app.listen(3000);

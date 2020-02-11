@@ -1,5 +1,6 @@
 module.exports = {
-  entry: "./src/server/index.ts",
+  mode: "development",
+  entry: "./packages/server/application/index.ts",
   devtool: "source-map",
   target: "node",
   node: {
@@ -13,5 +14,10 @@ module.exports = {
   module: {
     rules: [{ test: /\.tsx?$/, use: "ts-loader" }]
   },
-  resolve: { extensions: [".ts", ".tsx", ".js", ".json"] }
+  resolve: { extensions: [".ts", ".tsx", ".js", ".json"] },
+  externals: [
+    {
+      formidable: "commonjs formidable"
+    }
+  ]
 };
