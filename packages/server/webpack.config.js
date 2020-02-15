@@ -5,19 +5,27 @@ module.exports = {
   target: "node",
   node: {
     __dirname: false,
-    __filename: false
+    __filename: false,
   },
   output: {
     path: `${__dirname}/build`,
-    filename: "server.js"
+    filename: "server.js",
   },
   module: {
-    rules: [{ test: /\.tsx?$/, use: "ts-loader" }]
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: {
+          loader: "ts-loader",
+          options: { configFile: "../tsconfig.json" },
+        },
+      },
+    ],
   },
   resolve: { extensions: [".ts", ".tsx", ".js", ".json"] },
   externals: [
     {
-      formidable: "commonjs formidable"
-    }
-  ]
+      formidable: "commonjs formidable",
+    },
+  ],
 };

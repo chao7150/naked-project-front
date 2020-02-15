@@ -2,27 +2,30 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
-  template: "./packages/client/ui/index.html",
-  filename: "./index.html"
+  template: "packages/client/ui/index.html",
 });
 
 module.exports = {
+  mode: "production",
   entry: "./packages/client/ui/index.tsx",
   devtool: "source-map",
   target: "web",
   output: {
-    path: path.resolve("dist"),
-    filename: "[name].js"
+    path: path.resolve("../../dist"),
+    filename: "[name].js",
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: {
-          loader: "ts-loader"
-        }
-      }
-    ]
+          loader: "ts-loader",
+          options: {
+            configFile: "../tsconfig.json",
+          },
+        },
+      },
+    ],
   },
   plugins: [htmlWebpackPlugin],
   resolve: { extensions: [".ts", ".tsx", ".js", ".json"] },
@@ -34,8 +37,8 @@ module.exports = {
         target: "https://gyokuro.chao.tokyo/api/temperature",
         secure: false,
         pathRewrite: { "^/api": "" },
-        changeOrigin: true
-      }
-    }
-  }
+        changeOrigin: true,
+      },
+    },
+  },
 };
