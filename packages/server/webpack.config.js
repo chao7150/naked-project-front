@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
   mode: "development",
   entry: "./packages/server/application/index.ts",
@@ -8,7 +10,7 @@ module.exports = {
     __filename: false,
   },
   output: {
-    path: `${__dirname}/build`,
+    path: path.resolve(__dirname, "../../build"),
     filename: "server.js",
   },
   module: {

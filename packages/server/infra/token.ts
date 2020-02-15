@@ -10,18 +10,20 @@ type TokenRequestResponse = {
 };
 
 type Conf = {
+  redisHostName: string;
+  redisPort: number;
   clientId: string;
   clientSecret: string;
   redirectUri: string;
   code: string;
 };
 
-const redis = new IoRedis();
+// eslint-disable-next-line
+const conf: Conf = require("../../../config/conf.json");
+console.log("hoge");
+const redis = new IoRedis(conf.redisPort, conf.redisHostName);
 
 export const refreshToken = async (): Promise<void> => {
-  // eslint-disable-next-line
-  const conf: Conf = require("../../../config/conf.json");
-
   const params = new URLSearchParams();
   params.append("grant_type", "refresh_token");
   const refreshToken = await redis.get("refreshToken");
@@ -50,9 +52,6 @@ export const refreshToken = async (): Promise<void> => {
 };
 
 export const getToken = async (): Promise<string> => {
-  // eslint-disable-next-line
-  const conf: Conf = require("../../../config/conf.json");
-
   const params = new URLSearchParams();
   params.append("grant_type", "authorization_code");
   params.append("code", conf.code);
