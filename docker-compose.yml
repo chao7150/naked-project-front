@@ -5,6 +5,7 @@ services:
     container_name: house-temperature-web
     depends_on:
       - redis
+    env_file: .env
     networks:
       - common_link
   redis:
