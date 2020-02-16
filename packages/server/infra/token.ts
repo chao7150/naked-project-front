@@ -1,5 +1,6 @@
 import * as IoRedis from "ioredis";
 import axios from "axios";
+import { SPOTIFY_ACCOUNT_ENDPOINT } from "./consts";
 
 type TokenRequestResponse = {
   access_token: string;
@@ -20,13 +21,20 @@ type Conf = {
 
 // eslint-disable-next-line
 const conf: Conf = require("../../../config/conf.json");
-console.log("hoge");
-const redis = new IoRedis(conf.redisPort, conf.redisHostName);
+const redis =
+  process.env.NODE_ENV === "production"
+    ? new IoRedis(conf.redisPort, conf.redisHostName)
+    : new IoRedis();
 
 export const refreshToken = async (): Promise<void> => {
   const params = new URLSearchParams();
   params.append("grant_type", "refresh_token");
   const refreshToken = await redis.get("refreshToken");
+  // TODO: モナドでどうにかしたい
+  if (refreshToken === null) {
+    console.error("failed to load refreshToken");
+    process.exit(1);
+  }
   params.append("refresh_token", refreshToken);
 
   const encodedIdAndSecret = Buffer.from(
@@ -35,7 +43,7 @@ export const refreshToken = async (): Promise<void> => {
 
   const { data } = await axios
     .post<Omit<TokenRequestResponse, "refresh_token">>(
-      "https://accounts.spotify.com/api/token",
+      SPOTIFY_ACCOUNT_ENDPOINT,
       params,
       {
         headers: {
@@ -62,16 +70,12 @@ export const getToken = async (): Promise<string> => {
   ).toString("base64");
 
   const { data, ...meta } = await axios
-    .post<TokenRequestResponse>(
-      "https://accounts.spotify.com/api/token",
-      params,
-      {
-        headers: {
-          Authorization: `Basic ${encodedIdAndSecret}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+    .post<TokenRequestResponse>(SPOTIFY_ACCOUNT_ENDPOINT, params, {
+      headers: {
+        Authorization: `Basic ${encodedIdAndSecret}`,
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    )
+    })
     .catch(e => {
       console.error(e);
       process.exit(1);

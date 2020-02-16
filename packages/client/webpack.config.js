@@ -1,17 +1,20 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 const path = require("path");
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
   template: "packages/client/ui/index.html",
 });
 
+// ここで何も設定しなくてもprocess.env.NODE_ENVはインジェクトされる
+const definePlugin = new webpack.DefinePlugin({});
+
 module.exports = {
-  mode: "production",
-  entry: "./packages/client/ui/index.tsx",
+  entry: path.resolve(__dirname, "ui/index.tsx"),
   devtool: "source-map",
   target: "web",
   output: {
-    path: path.resolve("../../dist"),
+    path: path.resolve(__dirname, "../../dist"),
     filename: "[name].js",
   },
   module: {
@@ -27,7 +30,7 @@ module.exports = {
       },
     ],
   },
-  plugins: [htmlWebpackPlugin],
+  plugins: [htmlWebpackPlugin, definePlugin],
   resolve: { extensions: [".ts", ".tsx", ".js", ".json"] },
   devServer: {
     contentBase: `${__dirname}/dist`,

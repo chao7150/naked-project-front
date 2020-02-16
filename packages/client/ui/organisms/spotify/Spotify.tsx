@@ -3,15 +3,22 @@ import { rawCurrentlyPlayingObject } from "../../../../common/const";
 import { fetchNowPlaying } from "../../../infra/fetchNowPlaying";
 import { Music } from "../../../domain/Music";
 
-const createMusicObject = (rawMusic: rawCurrentlyPlayingObject): Music => ({
-  name: rawMusic.item.name,
-  artists: rawMusic.item.artists.map(artist => artist.name),
-  spotifyUrl: rawMusic.item.external_urls.spotify,
-  imageUrl: rawMusic.item.album.images[0].url,
-});
+const createMusicObject = (rawMusic: rawCurrentlyPlayingObject): Music => {
+  return {
+    name: rawMusic.item.name,
+    artists: rawMusic.item.artists.map(artist => artist.name),
+    spotifyUrl: rawMusic.item.external_urls.spotify,
+    imageUrl: rawMusic.item.album.images[0]?.url,
+  };
+};
 
 export const Spotify: React.FC = () => {
-  const [music, setMusic] = useState<Music>();
+  const [music, setMusic] = useState<Music>({
+    name: "Nothing",
+    artists: undefined,
+    spotifyUrl: undefined,
+    imageUrl: undefined,
+  });
   useEffect(() => {
     const fetch = async (): Promise<void> => {
       const nowPlaying = await fetchNowPlaying();
@@ -20,5 +27,12 @@ export const Spotify: React.FC = () => {
     fetch();
     setInterval(fetch, 30 * 1000);
   }, []);
-  return <span>{JSON.stringify(music)}</span>;
+  return (
+    <>
+      <h1>ちゃおが今聴いている音楽</h1>
+      <img src={music.imageUrl} />
+      <a href={music.spotifyUrl}>{music.name}</a>
+      <span> by {music.artists}</span>
+    </>
+  );
 };

@@ -2,9 +2,12 @@ import { rawCurrentlyPlayingObject } from "../../common/const";
 import axios from "axios";
 
 export async function fetchNowPlaying(): Promise<rawCurrentlyPlayingObject> {
+  const endPoint =
+    process.env.NODE_ENV === "production"
+      ? "https://sencha.chao.tokyo/"
+      : "http://localhost:3000/";
   const { data } = await axios.get<rawCurrentlyPlayingObject>(
-    "http://localhost:3000/api/nowPlaying",
+    `${endPoint}api/nowPlaying`,
   );
-  console.log("chao");
   return data;
 }

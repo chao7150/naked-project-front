@@ -1,7 +1,9 @@
 const path = require("path");
+const webpack = require("webpack");
+
+const definePlugin = new webpack.DefinePlugin({});
 
 module.exports = {
-  mode: "development",
   entry: "./packages/server/application/index.ts",
   devtool: "source-map",
   target: "node",
@@ -24,6 +26,7 @@ module.exports = {
       },
     ],
   },
+  plugins: [definePlugin],
   resolve: { extensions: [".ts", ".tsx", ".js", ".json"] },
   externals: [
     {
