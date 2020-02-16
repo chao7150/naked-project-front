@@ -2,13 +2,17 @@ version: "3"
 services:
   web:
     build: .
-    ports:
-      - "3000:3000"
     container_name: house-temperature-web
     depends_on:
       - redis
+    networks:
+      - common_link
   redis:
     image: "redis:latest"
     ports:
       - "6379"
     command: redis-server
+
+networks:
+  common_link:
+    external: true
