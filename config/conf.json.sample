@@ -1,8 +1,8 @@
 {
   "redisHostName": "hoge",
-  "redisPort": 1234
+  "redisPort": 1234,
   "clientId": "hoge",
   "clientSecret": "hoge",
   "redirectUri": "hoge",
-  "code": "hoge",
+  "code": "hoge"
 }
