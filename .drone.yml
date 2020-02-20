@@ -7,6 +7,7 @@ steps:
     image: node:latest
     commands:
       - yarn
+      - cp config/conf.json.sample config/conf.json
       - yarn build:client
       - yarn build:server
 
@@ -37,15 +38,14 @@ steps:
       - git pull origin master
   - name: stop old container
     commands:
-      - if [ "$(docker ps | grep 'house-temperature-web')" ]; then docker rm -f house-temperature-web;fi
+      - if [ "$(docker ps | grep 'house-temperature-web')" ]; then docker-compose down;fi
   - name: build and deploy
     depends_on:
       - pull
       - stop old container
     commands:
       - cd /home/satoru/work/house-temperature-web
-      - docker build -t house-temperature-web:latest .
-      - docker run -d -p 3000:3000 --env-file .env --net common_link --name house-temperature-web house-temperature-web:latest
+      - docker-compose up
 
 trigger:
   branch:
