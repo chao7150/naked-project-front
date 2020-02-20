@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   CartesianGrid,
   Line,
@@ -10,7 +10,7 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
-import { WeatherData } from "../../domain/WeatherData";
+import { WeatherData } from "../../../domain/WeatherData";
 
 export interface GraphContainerProps {
   title: string;

@@ -1,12 +1,10 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import { GraphContainer } from "../organisms/GraphContainer";
-import { WeatherData } from "../../domain/WeatherData";
-import { Header } from "../organisms/Header";
-import * as moment from "moment-timezone";
-import { fetchTodayAndYesterday } from "../../infra/fetchData";
+import React, { useState, useEffect } from "react";
+import { GraphContainer } from "./GraphContainer";
+import { WeatherData } from "../../../domain/WeatherData";
+import moment from "moment-timezone";
+import { fetchTodayAndYesterday } from "../../../infra/fetchData";
 
-export const App: React.FunctionComponent = () => {
+export const GraphList: React.FC = () => {
   const [data, setData] = useState<WeatherData[]>([]);
   useEffect(() => {
     const fetch = async (): Promise<void> => {
@@ -25,10 +23,8 @@ export const App: React.FunctionComponent = () => {
   const pressureList = data.map(({ pressure }) => pressure);
   const minPressure = Math.min(standardPressure, ...pressureList);
   const maxPressure = Math.max(standardPressure, ...pressureList);
-
   return (
-    <>
-      <Header />
+    <ul>
       <GraphContainer
         title="気温"
         data={data}
@@ -50,6 +46,6 @@ export const App: React.FunctionComponent = () => {
         domain={[minPressure, maxPressure]}
         referenceProps={{ y: standardPressure, label: "標準気圧" }}
       />
-    </>
+    </ul>
   );
 };

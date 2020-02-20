@@ -1,0 +1,24 @@
+version: "3"
+services:
+  web:
+    build: .
+    container_name: house-temperature-web
+    depends_on:
+      - redis
+    env_file: .env
+    networks:
+      - common_link
+      - house-temperature-web-internal
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379"
+    command: redis-server --appendonly yes
+    volumes: ./redis-data:/data
+    networks:
+      - house-temperature-web-internal
+
+networks:
+  common_link:
+    external: true
+  house-temperature-web-internal:
