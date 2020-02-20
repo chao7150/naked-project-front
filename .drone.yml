@@ -38,6 +38,7 @@ steps:
       - git pull origin master
   - name: stop old container
     commands:
+      - cd /home/satoru/work/house-temperature-web
       - if [ "$(docker ps | grep 'house-temperature-web')" ]; then docker-compose down;fi
   - name: build and deploy
     depends_on:
