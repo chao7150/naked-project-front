@@ -13,7 +13,8 @@ services:
     image: "redis:latest"
     ports:
       - "6379"
-    command: redis-server
+    command: redis-server --appendonly yes
+    volumes: ./redis-data:/data
     networks:
       - house-temperature-web-internal
 
