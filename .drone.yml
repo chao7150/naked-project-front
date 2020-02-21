@@ -46,7 +46,7 @@ steps:
       - stop old container
     commands:
       - cd /home/satoru/work/house-temperature-web
-      - docker-compose up --build
+      - docker-compose up -d --build
 
 trigger:
   branch:
