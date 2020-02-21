@@ -2,8 +2,14 @@ import React, { useState, useEffect } from "react";
 import { rawCurrentlyPlayingObject } from "../../../../common/const";
 import { fetchNowPlaying } from "../../../infra/fetchNowPlaying";
 import { Music } from "../../../domain/Music";
+import { MusicComponent } from "./Music";
 
-const createMusicObject = (rawMusic: rawCurrentlyPlayingObject): Music => {
+const createMusicObject = (
+  rawMusic: rawCurrentlyPlayingObject,
+): Music | undefined => {
+  if (!(rawMusic.item && rawMusic.item.name)) {
+    return undefined;
+  }
   return {
     name: rawMusic.item.name,
     artists: rawMusic.item.artists.map(artist => artist.name),
@@ -13,12 +19,7 @@ const createMusicObject = (rawMusic: rawCurrentlyPlayingObject): Music => {
 };
 
 export const Spotify: React.FC = () => {
-  const [music, setMusic] = useState<Music>({
-    name: "Nothing",
-    artists: undefined,
-    spotifyUrl: undefined,
-    imageUrl: undefined,
-  });
+  const [music, setMusic] = useState<Music | undefined>(undefined);
   useEffect(() => {
     const fetch = async (): Promise<void> => {
       const nowPlaying = await fetchNowPlaying();
@@ -30,9 +31,7 @@ export const Spotify: React.FC = () => {
   return (
     <>
       <h1>ちゃおが今聴いている音楽</h1>
-      <img src={music.imageUrl} />
-      <a href={music.spotifyUrl}>{music.name}</a>
-      <span> by {music.artists}</span>
+      {music ? <MusicComponent {...music} /> : <span>なし</span>}
     </>
   );
 };
