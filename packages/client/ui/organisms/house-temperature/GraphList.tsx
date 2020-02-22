@@ -24,7 +24,8 @@ export const GraphList: React.FC = () => {
   const minPressure = Math.min(standardPressure, ...pressureList);
   const maxPressure = Math.max(standardPressure, ...pressureList);
   return (
-    <ul>
+    <>
+      <h2>ちゃおハウスの天気</h2>
       <GraphContainer
         title="気温"
         data={data}
@@ -46,6 +47,6 @@ export const GraphList: React.FC = () => {
         domain={[minPressure, maxPressure]}
         referenceProps={{ y: standardPressure, label: "標準気圧" }}
       />
-    </ul>
+    </>
   );
 };
