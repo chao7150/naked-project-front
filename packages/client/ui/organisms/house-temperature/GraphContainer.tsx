@@ -29,7 +29,7 @@ export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
 }: GraphContainerProps) => {
   return (
     <>
-      <h2>{title}</h2>
+      <h3>{title}</h3>
       <ResponsiveContainer width="90%" height={400}>
         <LineChart data={data} syncId="chao">
           <Line type="monotone" dataKey={dataKey} />

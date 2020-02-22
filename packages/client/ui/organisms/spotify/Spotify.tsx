@@ -30,7 +30,7 @@ export const Spotify: React.FC = () => {
   }, []);
   return (
     <>
-      <h1>ちゃおが今聴いている音楽</h1>
+      <h2>ちゃおが今聴いている音楽</h2>
       {music ? <MusicComponent {...music} /> : <span>なし</span>}
     </>
   );
