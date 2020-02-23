@@ -4,3 +4,5 @@ dist/
 build/
 conf.json
 .env
+logs/
+redis-data/
