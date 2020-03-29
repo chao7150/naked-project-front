@@ -7,7 +7,7 @@ export const Header: React.FunctionComponent = () => {
       <ul>
         <li>ちゃおのあらゆる情報をインターネットに公開する実験</li>
         <li>
-          <a href="https://github.com/chao7150/house-temperature-web">
+          <a href="https://github.com/chao7150/naked-project-front">
             ソースコード
           </a>
         </li>
