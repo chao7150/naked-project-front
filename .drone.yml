@@ -12,57 +12,15 @@ steps:
     when:
       event:
         - pull_request
+
   - name: push docker image
-    image: node:latest
-    commands:
-      - docker build -t docker.chao.tokyo/house-temperature-web:latest .
-      - docker push docker.chao.tokyo/house-temperature-web:latest
+    image: plugins/docker
+    settings:
+      registry: docker.chao.tokyo
+      repo: house-temperature-web
+      tags: latest
     when:
-      branch:
-        - master
       event:
         - push
-
-
-
----
-kind: pipeline
-type: ssh
-name: deploy
-
-server:
-  host:
-    from_secret: ssh_host
-  user:
-    from_secret: ssh_user
-  ssh_key:
-    from_secret: ssh_key
-
-clone:
-  disable: true
-
-steps:
-  - name: pull
-    commands:
-      - cd /home/satoru/work/house-temperature-web
-      - git pull origin master
-  - name: stop old container
-    commands:
-      - cd /home/satoru/work/house-temperature-web
-      - if [ "$(docker ps | grep 'house-temperature-web')" ]; then docker-compose down;fi
-  - name: build and deploy
-    depends_on:
-      - pull
-      - stop old container
-    commands:
-      - cd /home/satoru/work/house-temperature-web
-      - docker-compose up -d --build
-
-trigger:
-  branch:
-    - master
-  event:
-    - push
-
-depends_on:
-  - test
+      branch:
+        - master
