@@ -16,8 +16,7 @@ steps:
   - name: push docker image
     image: plugins/docker
     settings:
-      registry: docker.chao.tokyo
-      repo: house-temperature-web
+      repo: docker.chao.tokyo/house-temperature-web
       tags: latest
     when:
       event:
