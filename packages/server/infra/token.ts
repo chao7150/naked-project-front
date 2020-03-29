@@ -10,20 +10,12 @@ type TokenRequestResponse = {
   refresh_token: string;
 };
 
-type Conf = {
-  redisHostName: string;
-  redisPort: number;
-  clientId: string;
-  clientSecret: string;
-  redirectUri: string;
-  code: string;
-};
-
-// eslint-disable-next-line
-const conf: Conf = require("../../../config/conf.json");
 const redis =
   process.env.NODE_ENV === "production"
-    ? new IoRedis(conf.redisPort, conf.redisHostName)
+    ? new IoRedis(
+        parseInt(process.env.REDIS_PORT!),
+        process.env.REDIS_HOSTNAME!,
+      )
     : new IoRedis();
 
 export const refreshToken = async (): Promise<void> => {
@@ -38,7 +30,7 @@ export const refreshToken = async (): Promise<void> => {
   params.append("refresh_token", refreshToken);
 
   const encodedIdAndSecret = Buffer.from(
-    `${conf.clientId}:${conf.clientSecret}`,
+    `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`,
   ).toString("base64");
 
   const { data } = await axios
@@ -62,11 +54,11 @@ export const refreshToken = async (): Promise<void> => {
 export const getToken = async (): Promise<string> => {
   const params = new URLSearchParams();
   params.append("grant_type", "authorization_code");
-  params.append("code", conf.code);
-  params.append("redirect_uri", conf.redirectUri);
+  params.append("code", process.env.CODE!);
+  params.append("redirect_uri", process.env.REDIRECT_URI!);
 
   const encodedIdAndSecret = Buffer.from(
-    `${conf.clientId}:${conf.clientSecret}`,
+    `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`,
   ).toString("base64");
 
   const { data, ...meta } = await axios

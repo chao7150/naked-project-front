@@ -7,13 +7,23 @@ steps:
     image: node:latest
     commands:
       - yarn
-      - cp config/conf.json.sample config/conf.json
       - yarn build:client
       - yarn build:server
+    when:
+      event:
+        - pull_request
+  - name: push docker image
+    image: node:latest
+    commands:
+      - docker build -t docker.chao.tokyo/house-temperature-web:latest .
+      - docker push docker.chao.tokyo/house-temperature-web:latest
+    when:
+      branch:
+        - master
+      event:
+        - push
 
-trigger:
-  event:
-    - pull_request
+
 
 ---
 kind: pipeline
