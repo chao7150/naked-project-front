@@ -2,7 +2,6 @@ node_modules
 dist/
 *.log
 build/
-conf.json
 .env
 logs/
 redis-data/

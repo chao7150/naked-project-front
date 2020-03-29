@@ -1,0 +1,8 @@
+{
+  "redisHostName": "house-temperature-web-redis",
+  "redisPort": 6379,
+  "clientId": "5e344a8b40e3491f9c5e579e153af649",
+  "clientSecret": "75c77da4222f40de899a66a0e3531a64",
+  "redirectUri": "https://sencha.chao.tokyo/",
+  "code": "AQCi7ZygfWOfP68Oi49o-mJXGFI_2i6a2xTU-q0A1azc_SsZrDJVviXdrHEdI33d-8Rfm-cbUdqYQPPC4Sgrjf-4ZiFCr0hd9ay6jIPwZF_kdwj3z13FfAbZzVHTdsDKiOCLuZkSZjVrlG1MQCeWYDaY-IrLsOTcd4ldGfm4ag4tmg-IbI7AIZzxgerK6tcKXpDeicudNDTzbYG5OdcXaL4zNAIXR6FiVyu55m0"
+}
