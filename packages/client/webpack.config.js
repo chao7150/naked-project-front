@@ -55,14 +55,6 @@ module.exports = {
   resolve: { extensions: [".ts", ".tsx", ".js", ".json"] },
   devServer: {
     contentBase: `${__dirname}/dist`,
-    port: 3000,
-    proxy: {
-      "/api": {
-        target: "https://gyokuro.chao.tokyo/api/temperature",
-        secure: false,
-        pathRewrite: { "^/api": "" },
-        changeOrigin: true,
-      },
-    },
+    port: 3001,
   },
 };
