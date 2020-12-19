@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GraphContainer } from "./GraphContainer";
 import { WeatherData } from "../../../domain/WeatherData";
-import moment from "moment-timezone";
 import { fetchTodayAndYesterday } from "../../../infra/fetchData";
 
 export const GraphList: React.FC = () => {
@@ -9,9 +8,7 @@ export const GraphList: React.FC = () => {
   useEffect(() => {
     const fetch = async (): Promise<void> => {
       const [yesterdayResult, todayResult] = (
-        await fetchTodayAndYesterday<{ data: WeatherData[] }>(
-          moment().tz("Asia/Tokyo"),
-        )
+        await fetchTodayAndYesterday<{ data: WeatherData[] }>(new Date())
       ).map(raw => raw.data.data);
       setData([...yesterdayResult, ...todayResult].slice(-12 * 24));
     };
