@@ -8,8 +8,8 @@ export const GraphList: React.FC = () => {
   useEffect(() => {
     const fetch = async (): Promise<void> => {
       const [yesterdayResult, todayResult] = (
-        await fetchTodayAndYesterday<{ data: WeatherData[] }>(new Date())
-      ).map(raw => raw.data.data);
+        await fetchTodayAndYesterday<WeatherData[]>(new Date())
+      ).map(raw => raw.data);
       setData([...yesterdayResult, ...todayResult].slice(-12 * 24));
     };
     fetch();
