@@ -2,7 +2,6 @@ import axios, { AxiosResponse } from "axios";
 import { API_ENDPOINT, API_HOST } from "./consts";
 
 export async function fetchByDate<T>(date: Date): Promise<AxiosResponse<T>> {
-  console.log(date);
   // TODO: パスの作り方を考える
   const url = new URL(
     `${API_ENDPOINT}?start=${encodeURIComponent(
