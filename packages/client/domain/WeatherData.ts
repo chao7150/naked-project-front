@@ -1,5 +1,5 @@
 export interface WeatherData {
-  time: string;
+  datetime: string;
   temperature: number;
   humidity: number;
   pressure: number;
