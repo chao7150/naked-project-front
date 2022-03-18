@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:16-slim
 
 COPY package.json /src/package.json
 WORKDIR /src
