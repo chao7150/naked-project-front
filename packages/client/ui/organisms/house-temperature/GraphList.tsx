@@ -34,21 +34,27 @@ export const GraphList: React.FC = () => {
         data={data}
         dataKey={"temperature"}
         domain={[0, 40]}
-        referenceProps={{ y: 17, label: "↓違法", stroke: "red" }}
+        referenceProps={[
+          { y: 17, label: "↓違法", stroke: "red" },
+          { y: 28, label: "↑違法", stroke: "red" },
+        ]}
       />
       <GraphContainer
         title="湿度"
         data={data}
         dataKey={"humidity"}
         domain={[0, 70]}
-        referenceProps={{ y: 40, label: "↓違法", stroke: "red" }}
+        referenceProps={[
+          { y: 40, label: "↓違法", stroke: "red" },
+          { y: 70, label: "↑違法", stroke: "red" },
+        ]}
       />
       <GraphContainer
         title="気圧"
         data={data}
         dataKey={"pressure"}
         domain={[minPressure, maxPressure]}
-        referenceProps={{ y: standardPressure, label: "標準気圧" }}
+        referenceProps={[{ y: standardPressure, label: "標準気圧" }]}
       />
     </>
   );

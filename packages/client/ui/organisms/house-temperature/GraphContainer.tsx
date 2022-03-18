@@ -17,7 +17,7 @@ export interface GraphContainerProps {
   data: WeatherData[];
   dataKey: keyof WeatherData;
   domain: [number, number];
-  referenceProps?: ReferenceLineProps;
+  referenceProps?: ReferenceLineProps[];
 }
 
 export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
@@ -30,13 +30,15 @@ export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
   return (
     <>
       <h3>{title}</h3>
-      <ResponsiveContainer width="90%" height={400}>
+      <ResponsiveContainer width="98%" height={400}>
         <LineChart data={data} syncId="chao">
           <Line type="monotone" dataKey={dataKey} />
           <XAxis dataKey="datetime" interval={59} />
           <YAxis domain={domain} />
           <CartesianGrid />
-          <ReferenceLine {...referenceProps} />
+          {referenceProps?.map(props => {
+            return <ReferenceLine {...props} />;
+          })}
           <Tooltip />
         </LineChart>
       </ResponsiveContainer>
