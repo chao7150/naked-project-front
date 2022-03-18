@@ -10,16 +10,3 @@ services:
       - "3000:3000"
     environment: 
       NODE_ENV: development
-      REDIS_HOSTNAME: house-temperature-web-redis
-      REDIS_PORT: 6379
-      CLIENT_ID: 5e344a8b40e3491f9c5e579e153af649
-      CLIENT_SECRET: 75c77da4222f40de899a66a0e3531a64
-      REDIRECT_URI: https://sencha.chao.tokyo/
-      CODE: AQCi7ZygfWOfP68Oi49o-mJXGFI_2i6a2xTU-q0A1azc_SsZrDJVviXdrHEdI33d-8Rfm-cbUdqYQPPC4Sgrjf-4ZiFCr0hd9ay6jIPwZF_kdwj3z13FfAbZzVHTdsDKiOCLuZkSZjVrlG1MQCeWYDaY-IrLsOTcd4ldGfm4ag4tmg-IbI7AIZzxgerK6tcKXpDeicudNDTzbYG5OdcXaL4zNAIXR6FiVyu55m0
-  house-temperature-web-redis:
-    image: "redis:latest"
-    ports:
-      - "6379"
-    command: redis-server --appendonly yes
-    volumes:
-      - ./redis-data:/data
