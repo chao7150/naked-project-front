@@ -1,9 +1,9 @@
-FROM node:16-slim
+FROM node:22-slim
 
 COPY package.json /src/package.json
 WORKDIR /src
-RUN yarn install
 COPY . /src
+RUN yarn install
 
 RUN yarn build:client
 RUN yarn build:server
