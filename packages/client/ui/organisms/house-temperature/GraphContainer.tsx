@@ -33,11 +33,23 @@ export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
       <ResponsiveContainer width="98%" height={400}>
         <LineChart data={data} syncId="chao">
           <Line type="monotone" dataKey={dataKey} />
-          <XAxis dataKey="datetime" interval={59} />
+          <XAxis
+            dataKey="datetime"
+            tickFormatter={(dateStringIso8601) => {
+              const date = new Date(dateStringIso8601);
+              return `${date.getHours()}:${date.getMinutes()}`;
+            }}
+            interval={59}
+          />
           <YAxis domain={domain} />
           <CartesianGrid />
-          {referenceProps?.map(props => {
-            return <ReferenceLine {...props} />;
+          {referenceProps?.map((props) => {
+            return (
+              <ReferenceLine
+                {...props}
+                key={typeof props.label === "string" ? props.label : ""}
+              />
+            );
           })}
           <Tooltip />
         </LineChart>

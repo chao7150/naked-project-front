@@ -10,8 +10,8 @@ export const GraphList: React.FC = () => {
     const fetch = async (): Promise<void> => {
       const [yesterdayResult, todayResult] = (
         await fetchTodayAndYesterday<WeatherData[]>(new Date())
-      ).map(raw =>
-        raw.data.map(data => ({
+      ).map((raw) =>
+        raw.data.map((data) => ({
           ...data,
           datetime: moment.tz(data.datetime, "Asia/Tokyo").format(),
         })),

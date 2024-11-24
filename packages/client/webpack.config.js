@@ -19,7 +19,7 @@ const normalModuleReplacementPlugin = new webpack.NormalModuleReplacementPlugin(
   path.resolve(__dirname, "../../misc/timezone-definitions/latest.json"),
 );
 
-const ignorePlugin = new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/);
+const ignorePlugin = new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ });
 
 // ここで何も設定しなくてもprocess.env.NODE_ENVはインジェクトされる
 const definePlugin = new webpack.DefinePlugin({});
