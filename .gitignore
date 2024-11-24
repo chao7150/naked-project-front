@@ -4,4 +4,4 @@ dist/
 build/
 .env
 logs/
-redis-data/
+.yarn/install-state.gz
