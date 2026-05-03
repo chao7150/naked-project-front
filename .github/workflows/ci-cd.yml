@@ -42,6 +42,7 @@ jobs:
     uses: chao7150/actions/.github/workflows/ecr-push.yml@main
     secrets:
       aws_role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      dispatch_token: ${{ secrets.DISPATCH_TOKEN }}
     with:
       aws_region: ${{ vars.AWS_REGION }}
       ecr_repository: ${{ vars.ECR_REPOSITORY }}
