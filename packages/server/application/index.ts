@@ -1,6 +1,6 @@
-import express from "express";
-import path from "path";
+import path from "node:path";
 import compression from "compression";
+import express from "express";
 
 const app = express();
 

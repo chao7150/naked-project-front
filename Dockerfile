@@ -1,12 +1,16 @@
-FROM node:22-slim
+FROM node:22
 
-COPY package.json /src/package.json
-WORKDIR /src
-COPY . /src
-RUN yarn install
+WORKDIR /work
 
-RUN yarn build:client
-RUN yarn build:server
+COPY package.json ./
+COPY .yarnrc.yml ./
+COPY yarn.lock ./
+
+RUN corepack yarn install --frozen-lockfile
+
+COPY . .
+
+RUN corepack yarn build
 
 HEALTHCHECK CMD curl -f http://localhost:3000/ || exit 1
 

@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Header } from "../organisms/Header";
 import { GraphList } from "../organisms/house-temperature/GraphList";
 

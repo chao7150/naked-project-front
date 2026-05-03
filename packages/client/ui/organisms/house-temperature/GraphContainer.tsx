@@ -1,23 +1,28 @@
-import React from "react";
+import type React from "react";
 import {
   CartesianGrid,
   Line,
   LineChart,
   ReferenceLine,
-  ReferenceLineProps,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
-  ResponsiveContainer,
 } from "recharts";
-import { WeatherData } from "../../../domain/WeatherData";
+import type { WeatherData } from "../../../domain/WeatherData";
+
+interface ReferenceProps {
+  y: number;
+  label?: string;
+  stroke?: string;
+}
 
 export interface GraphContainerProps {
   title: string;
   data: WeatherData[];
   dataKey: keyof WeatherData;
   domain: [number, number];
-  referenceProps?: ReferenceLineProps[];
+  referenceProps?: ReferenceProps[];
 }
 
 export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
@@ -44,12 +49,7 @@ export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
           <YAxis domain={domain} />
           <CartesianGrid />
           {referenceProps?.map((props) => {
-            return (
-              <ReferenceLine
-                {...props}
-                key={typeof props.label === "string" ? props.label : ""}
-              />
-            );
+            return <ReferenceLine {...props} key={props.label} />;
           })}
           <Tooltip />
         </LineChart>

@@ -1,5 +1,8 @@
-import { createRoot } from "react-dom/client";
 import React from "react";
+import { createRoot } from "react-dom/client";
 import { App } from "./templates/body";
 
-createRoot(document.getElementById("index")).render(<App />);
+const container = document.getElementById("index");
+if (container) {
+  createRoot(container).render(<App />);
+}

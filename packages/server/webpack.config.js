@@ -1,9 +1,10 @@
-const path = require("path");
+const path = require("node:path");
 const webpack = require("webpack");
 
 const definePlugin = new webpack.DefinePlugin({});
 
 module.exports = {
+  mode: "production",
   entry: "./packages/server/application/index.ts",
   devtool: "source-map",
   target: "node",

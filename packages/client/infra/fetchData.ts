@@ -1,8 +1,6 @@
-import axios, { AxiosResponse } from "axios";
 import { API_ENDPOINT, API_HOST } from "./consts";
 
-export async function fetchByDate<T>(date: Date): Promise<AxiosResponse<T>> {
-  // TODO: パスの作り方を考える
+export async function fetchByDate<T>(date: Date): Promise<T> {
   const url = new URL(
     `${API_ENDPOINT}?start=${encodeURIComponent(
       new Date(date.setHours(0, 0, 0, 0)).toISOString(),
@@ -11,12 +9,14 @@ export async function fetchByDate<T>(date: Date): Promise<AxiosResponse<T>> {
     )}`,
     API_HOST,
   );
-  return axios.get<T>(url.href);
+  const response = await fetch(url.href);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json();
 }
 
-export async function fetchTodayAndYesterday<T>(
-  date: Date,
-): Promise<AxiosResponse<T>[]> {
+export async function fetchTodayAndYesterday<T>(date: Date): Promise<T[]> {
   const yesterdayPromise = fetchByDate<T>(
     new Date(date.valueOf() - 1000 * 60 * 60 * 24),
   );

@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "target": "es5",
-    "module": "es2015",
-    "jsx": "react",
-    "moduleResolution": "node",
-    "lib": [
-      "es2019",
-      "dom"
-    ],
+    "target": "ES2022",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "lib": ["ES2024", "DOM"],
     "allowSyntheticDefaultImports": true,
-    "strictNullChecks": true
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "packages/**/*"
-  ]
+  "include": ["packages/**/*"]
 }

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { GraphContainer } from "./GraphContainer";
-import { WeatherData } from "../../../domain/WeatherData";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { Temporal } from "temporal-polyfill";
+import type { WeatherData } from "../../../domain/WeatherData";
 import { fetchTodayAndYesterday } from "../../../infra/fetchData";
-import moment from "moment-timezone";
+import { GraphContainer } from "./GraphContainer";
 
 export const GraphList: React.FC = () => {
   const [data, setData] = useState<WeatherData[]>([]);
@@ -11,9 +12,11 @@ export const GraphList: React.FC = () => {
       const [yesterdayResult, todayResult] = (
         await fetchTodayAndYesterday<WeatherData[]>(new Date())
       ).map((raw) =>
-        raw.data.map((data) => ({
-          ...data,
-          datetime: moment.tz(data.datetime, "Asia/Tokyo").format(),
+        raw.map((item) => ({
+          ...item,
+          datetime: Temporal.Instant.from(item.datetime)
+            .toZonedDateTimeISO("Asia/Tokyo")
+            .toString(),
         })),
       );
       setData([...yesterdayResult, ...todayResult].slice(-12 * 24));
