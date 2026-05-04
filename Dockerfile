@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:24-alpine as builder
 
 WORKDIR /work
 
@@ -12,8 +12,16 @@ COPY . .
 
 RUN corepack yarn build
 
-HEALTHCHECK CMD curl -f http://localhost:3000/ || exit 1
+FROM joseluisq/static-web-server:2-alpine
+
+ENV SERVER_PORT=3000
+ENV SERVER_COMPRESSION=true
+ENV SERVER_ROOT=/public
+
+COPY --from=builder /work/dist/*.js /public/
+COPY --from=builder /work/dist/*.html /public/
+COPY --from=builder /work/dist/*.LICENSE.txt /public/
+
+HEALTHCHECK CMD wget -q --spider http://localhost:3000/ || exit 1
 
 EXPOSE 3000
-
-CMD ["node", "build/server.js"]
