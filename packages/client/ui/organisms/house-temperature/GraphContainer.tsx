@@ -40,10 +40,6 @@ export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
           <Line type="monotone" dataKey={dataKey} />
           <XAxis
             dataKey="datetime"
-            tickFormatter={(dateStringIso8601) => {
-              const date = new Date(dateStringIso8601);
-              return `${date.getHours()}:${date.getMinutes()}`;
-            }}
             interval={59}
           />
           <YAxis domain={domain} />
