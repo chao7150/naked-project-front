@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-and-build:
-    name: Test and Build
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
@@ -29,12 +29,12 @@ jobs:
       - name: Run lint
         run: corepack yarn lint
 
-      - name: Build
-        run: corepack yarn build
+      - name: Type check
+        run: corepack yarn typecheck
 
   docker-build-and-push:
     name: Build and Push to ECR
-    needs: test-and-build
+    needs: test
     if: github.event_name != 'pull_request'
     permissions:
       id-token: write

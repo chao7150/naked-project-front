@@ -18,6 +18,7 @@ module.exports = {
           loader: "ts-loader",
           options: {
             configFile: "tsconfig.json",
+            transpileOnly: true,
           },
         },
       },
@@ -31,8 +32,8 @@ module.exports = {
   devServer: {
     static: `${__dirname}/dist`,
     port: 3001,
-      client: {
-        overlay: false,
-      }
+    client: {
+      overlay: false,
+    },
   },
 };

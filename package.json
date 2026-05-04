@@ -6,6 +6,7 @@
     "build": "yarn build:client && cp src/ui/index.html dist/index.html",
     "build:client": "webpack --config webpack.config.js",
     "start:client": "webpack-dev-server --config webpack.config.js --open --hot",
+    "typecheck": "tsgo --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "format": "biome format . --write"
@@ -22,6 +23,7 @@
     "@biomejs/biome": "^1.8.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260504.1",
     "css-loader": "^7.1.4",
     "style-loader": "^4.0.0",
     "ts-loader": "^6.2.1",

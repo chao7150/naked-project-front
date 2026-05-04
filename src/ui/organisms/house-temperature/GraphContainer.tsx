@@ -32,12 +32,15 @@ export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
   domain,
   referenceProps,
 }: GraphContainerProps) => {
-  const formatTooltip = React.useCallback((value: number | string | Array<number | string>) => {
-    if (typeof value === "number") {
-      return value.toPrecision(4);
-    }
-    return value;
-  }, []);
+  const formatTooltip = React.useCallback(
+    (value: number | string | Array<number | string>) => {
+      if (typeof value === "number") {
+        return value.toPrecision(4);
+      }
+      return value;
+    },
+    [],
+  );
 
   return (
     <section>
