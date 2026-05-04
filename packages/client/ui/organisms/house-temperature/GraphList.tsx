@@ -16,7 +16,10 @@ export const GraphList: React.FC = () => {
           ...item,
           datetime: Temporal.Instant.from(item.datetime)
             .toZonedDateTimeISO("Asia/Tokyo")
-            .toString(),
+            .toLocaleString("ja-JP", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
         })),
       );
       setData([...yesterdayResult, ...todayResult].slice(-12 * 24));

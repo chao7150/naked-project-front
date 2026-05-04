@@ -8,6 +8,7 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
 
 const definePlugin = new webpack.DefinePlugin({});
 
+/** @type {import('webpack').Configuration} */
 module.exports = {
   mode: "production",
   entry: path.resolve(__dirname, "ui/index.tsx"),
@@ -35,5 +36,8 @@ module.exports = {
   devServer: {
     static: `${__dirname}/dist`,
     port: 3001,
+      client: {
+        overlay: false,
+      }
   },
 };

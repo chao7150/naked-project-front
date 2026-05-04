@@ -2,7 +2,7 @@ import type React from "react";
 
 export const Header: React.FunctionComponent = () => {
   return (
-    <>
+    <header>
       <h1>ちゃおネイキッドプロジェクト</h1>
       <ul>
         <li>ちゃおのあらゆる情報をインターネットに公開する実験</li>
@@ -12,6 +12,6 @@ export const Header: React.FunctionComponent = () => {
           </a>
         </li>
       </ul>
-    </>
+    </header>
   );
 };

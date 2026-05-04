@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import {
   CartesianGrid,
   Line,
@@ -32,8 +32,15 @@ export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
   domain,
   referenceProps,
 }: GraphContainerProps) => {
+  const formatTooltip = React.useCallback((value: number | string | Array<number | string>) => {
+    if (typeof value === "number") {
+      return value.toPrecision(4);
+    }
+    return value;
+  }, []);
+
   return (
-    <>
+    <section>
       <h3>{title}</h3>
       <ResponsiveContainer width="98%" height={400}>
         <LineChart data={data} syncId="chao">
@@ -44,9 +51,9 @@ export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
           {referenceProps?.map((props) => {
             return <ReferenceLine {...props} key={props.label} />;
           })}
-          <Tooltip />
+          <Tooltip formatter={formatTooltip} />
         </LineChart>
       </ResponsiveContainer>
-    </>
+    </section>
   );
 };
