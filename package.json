@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "yarn build:client",
-    "build:client": "webpack --config packages/client/webpack.config.js",
-    "start:client": "webpack-dev-server --config packages/client/webpack.config.js --open --hot",
+    "build": "yarn build:client && cp src/ui/index.html dist/index.html",
+    "build:client": "webpack --config webpack.config.js",
+    "start:client": "webpack-dev-server --config webpack.config.js --open --hot",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "format": "biome format . --write"
@@ -22,7 +22,8 @@
     "@biomejs/biome": "^1.8.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "html-webpack-plugin": "^5.6.3",
+    "css-loader": "^7.1.4",
+    "style-loader": "^4.0.0",
     "ts-loader": "^6.2.1",
     "typescript": "^5.7.2",
     "webpack": "^5.96.1",
