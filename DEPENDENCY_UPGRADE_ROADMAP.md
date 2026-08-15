@@ -15,7 +15,7 @@
 - **「影響範囲が狭い順」に進める**。1 ファイルしか触らない upgrade を先に、
   アプリ全体挙動に絡む upgrade（React / recharts）は後段へ。
 - 各ラウンドの **想定触るファイル** を先に書き出してから着手する。
-- Renovate の導入（Round 12）は **手動ラウンドがひととおり終わった後**。
+- Renovate の導入（Round 11）は **手動ラウンドがひととおり終わった後**。
   CI が壊れたときに Dependabot 由来なのか自分由来なのかを切り分けたいから。
 
 ## 現行バージョンと上がり先（2026-08-15 時点）
@@ -47,13 +47,13 @@
    ├─→ [ Round 3:  temporal-polyfill 0 → 1 ]   ← GraphList.tsx 1 ファイル
    ├─→ [ Round 4:  webpack-dev-server 5 → 6 ]  ← webpack.config.js 1 ファイル
    │      └─→ [ Round 5:  webpack-cli 5 → 6 → 7 ]  ← package.json + npm scripts
-   ├─→ [ Round 6:  TypeScript 5 → 6 ]     ← ビルドのみ
-   │      └─→ [ Round 7:  TypeScript 6 → 7 + @typescript/native-preview 更新 ]
-   └─→ [ Round 8:  React 18 → 19 ]
-          ├─→ [ Round 9:  recharts 2 → 3 ]  ← React 19 に乗せる前提
-          └─→ [ Round 10: CI 強化 (PLAN.md Round 6) ]
-                └─→ [ Round 11: CI の Node 24 化 ]
-                     └─→ [ Round 12: Renovate 導入 (PLAN.md Round 7) ]
+   ├─→ [ Round 6A: ts-loader → esbuild-loader ]       ← loader 切替（TS のバージョンから脱結合）
+   │      └─→ [ Round 6B: TypeScript 5 → 7 + @typescript/native-preview 更新（**1 PR**、SemVer 不採用） ]  ← ビルドのみ
+   └─→ [ Round 7:  React 18 → 19 ]
+├─→ [ Round 8:  recharts 2 → 3 ]  ← React 19 に乗せる前提
+           └─→ [ Round 9: CI 強化 (PLAN.md Round 6) ]
+                 └─→ [ Round 10: CI の Node 24 化 ]
+                      └─→ [ Round 11: Renovate 導入 (PLAN.md Round 7) ]
 ```
 
 **順序の根拠**:
@@ -61,17 +61,22 @@
 - Round 1 で patch 群を**先に**流してロックファイルを落ち着かせる。後のメジャーで
   lockfile diff が膨らまないように。
 - Round 2（biome）は**他とは独立**で 1 ファイル変更なのでいつでも動かせる。
-  ただし Round 12（Renovate）の前に置く（biome のルール変更が Renovate PR に紛れるのを避ける）。
+  ただし Round 11（Renovate）の前に置く（biome のルール変更が Renovate PR に紛れるのを避ける）。
 - Round 3（temporal-polyfill）は GraphList.tsx 1 ファイルしか触らない。先に流して
-  Round 8（React 19）と Round 9（recharts 3）のアプリ側改修で触るファイル集合と分離する。
+  Round 7（React 19）と Round 8（recharts 3）のアプリ側改修で触るファイル集合と分離する。
 - Round 4/5（webpack-dev-server / webpack-cli）は **dev 環境のみ**。本番ビルド
-  （`yarn build`）には影響しない。CI に `yarn build` を入れる（Round 10）前に終わらせたい。
-- Round 6/7（TypeScript）は **ビルドパイプラインのみ**。アプリ挙動には触らない。
-  アプリ側の型エラーが増えるので、Round 8（React）の**前**に終わらせる。
-- Round 8（React 19）はアプリ全体挙動に最も影響が大きいので**最後**。
-- Round 9（recharts 3）は React 19 対応版が出てからにしたいので Round 8 の後。
-- Round 10/11（CI 強化 / Node 24）は依存本体ではなく CI 側の話。Round 8 の前に
-  入れても OK だが、ここでは Round 8 のあと、Renovate の前という流れで配置。
+  （`yarn build`）には影響しない。CI に `yarn build` を入れる（Round 9）前に終わらせたい。
+- Round 6A → 6B は **ビルドパイプラインのみ**。アプリ挙動には触らない。
+  アプリ側の型エラーが増えるので、Round 7（React）の**前**に終わらせる。
+  **TypeScript は SemVer を採用していない**ため、5 → 7 に直ジャンプする
+  （6B として 1 PR）。6A（loader 切替）は 6B の前提。
+- Round 6A の目的はあくまで **TypeScript のバージョンから脱結合**すること。
+  ts-loader は TS の内部 API を叩くので、TS 7 で `ts.sys` 削除されると詰まる。
+  esbuild-loader なら TS の構文しか見ないのでバージョン非依存で動く。
+- Round 7（React 19）はアプリ全体挙動に最も影響が大きいので**最後**。
+- Round 8（recharts 3）は React 19 対応版が出てからにしたいので Round 7 の後。
+- Round 9/10（CI 強化 / Node 24）は依存本体ではなく CI 側の話。Round 7 の前に
+  入れても OK だが、ここでは Round 7 のあと、Renovate の前という流れで配置。
 
 ---
 
@@ -172,53 +177,77 @@ HMR が動くことを確認。
 
 **リスク**: 中。webpack-cli 6/7 は設定読み込みの挙動が大きく変わることがある。
 `webpack.config.js` の最小修正で済む想定だが、CI に `yarn build` を入れるのは
-Round 10 なので、CI フィードバックは PR レビュー時のローカル実行頼り。
+Round 9 なので、CI フィードバックは PR レビュー時のローカル実行頼り。
 
 ---
 
-## Round 6 — `typescript` 5.9 → 6（1 PR）
+## Round 6A — `ts-loader` → `esbuild-loader`（1 PR）
 
-**目的**: TypeScript 6 系へ。ビルドパイプラインのみに影響。
+**目的**: webpack の TS トランスパイラを ts-loader から esbuild-loader へ
+切り替える。**TypeScript のバージョンから脱結合**することが真の目的。
+
+**背景**:
+- ts-loader は TypeScript の内部 API（`ts.sys` 等）に深く依存しているため、
+  TypeScript の破壊的変更に毎回振り回される。
+- TypeScript 7.0 で `ts.sys` が削除され、ts-loader 9.6 系がビルド不能になった
+  （`Cannot read properties of undefined (reading 'fileExists')`）。
+  ts-loader の TypeScript 7 フル対応は 7.1 まで待たないと来ない。
+- esbuild-loader は TypeScript の **構文だけ解釈して型情報は捨てる** ため、
+  TypeScript のバージョンとは事実上独立して動く。
+- 本プロジェクトは **既に `tsgo --noEmit` で型チェックを独立実行している**
+  （`package.json` の `"typecheck": "tsgo --noEmit"`）。loader 側に型チェック
+  機能を期待していないため、loader 切替の論理的影響はゼロ。
 
 **触るファイル**:
-- `package.json`（`"typescript": "^6.0.3"`）
-- `tsconfig.json`（必要なら target/lib の調整）
-- アプリコード（型エラーが出たら最小修正）
+- `package.json`（`ts-loader` 削除、`esbuild-loader` 追加）
+- `webpack.config.js`（`module.rules` の loader を入れ替え）
 
-**確認ポイント**: TS 6 で `strict` まわりの挙動が一部変わっている。
-`tsconfig.json` の `target: "ES2022"` / `lib: ["ES2024", "DOM"]` は据え置き想定。
-`ts-loader` 9.6 系は TS 6 を公式サポートしているはずだが、公式リリースノートの
-確認が必要。
+**確認ポイント**:
+- esbuild-loader は `tsconfig.json` の `target` / `jsx` / `loader` 設定等を読む
+  ので、現状の `tsconfig.json` のままで動作する想定。
+- `transpileOnly: true` 相当は esbuild-loader のデフォルト動作（型情報を捨てる）
+  と一致する。
+- `tsx` 拡張子も esbuild が標準サポート。
 
-**検証**: `yarn typecheck && yarn build`
+**検証**: `yarn lint && yarn typecheck && yarn build && yarn start:client --no-open`
 
-**リスク**: 中。型エラーは出る可能性が高いが、`PLAN.md` Round 5 で `strict: true`
-済みなので局所修正で済む想定。修正量が膨らんだら `Round 6-A`/`6-B` に分割。
+**リスク**: 低〜中。webpack.config.js の 1 ブロック書き換えのみ。
+**フォールバック**: 起動できなければ `ts-loader` に戻す（1 PR revert）。
 
 ---
 
-## Round 7 — `typescript` 6 → 7 + `@typescript/native-preview` 更新（1 PR）
+## Round 6B — `typescript` 5.9 → 7 + `@typescript/native-preview` 更新（1 PR）
 
-**目的**: TypeScript 7 系へ。本プロジェクトは既に `@typescript/native-preview` を
-`tsgo` として使っているので、native preview の dev tag 更新も同時に行う。
+**目的**: TypeScript 7 系へ一気に上げる。本プロジェクトは SemVer を採用していない
+ため、5 → 6 → 7 と段階的に上げても SemVer 的な保証上のメリットはない。
+1 PR で 5 → 7 に直ジャンプする。同時に `@typescript/native-preview` の dev tag を
+TypeScript 7.0 系に追従させる。
 
 **触るファイル**:
 - `package.json`（`"typescript": "^7.0.2"`、`"@typescript/native-preview": "7.0.0-dev.20260707.2"` 等の dev タグ固定）
-- `tsconfig.json`（target/lib）
-- アプリコード（型エラー）
+- アプリコード（型エラーが出たら最小修正）
 
-**確認ポイント**: TS 7 で `ts-loader` 9.6 系が追従できているか確認。
-追従できていない場合は、`ts-loader` の更新を間に挟むか、`tsgo` を typecheck
-専用に格上げする選択肢を検討（`package.json` の `"typecheck": "tsgo --noEmit"`
-は既にそうなっている）。
+**前提条件**: Round 6A で loader を esbuild-loader に切替済みであること。
+ts-loader 経由で TypeScript 7 を動かそうとすると `ts.sys` 削除で詰まるため、
+6B の前提として 6A が必須。
 
-**リスク**: 中〜高。TS 7 は出たばかりで破壊的変更が多い。
-**爆発時のフォールバック**: 修正が 10 ファイルを超えるなら、6 → 7 を保留して
-`@typescript/native-preview` の dev tag 更新だけ別 PR に切り出す。
+**確認ポイント**:
+- TS 6/7 で `strict` まわりの挙動が一部変わっている。
+  `tsconfig.json` の `target: "ES2022"` / `lib: ["ES2024", "DOM"]` は据え置き想定。
+- esbuild-loader は TypeScript の構文解釈しかしないため、**アプリコードの
+  型エラーは esbuild-loader ではなく `tsgo`（typecheck）で検出される**。
+  `yarn typecheck` が green であれば OK。
+
+**検証**: `yarn typecheck && yarn build && yarn start:client --no-open`
+
+**リスク**: 中。TS 7 は出たばかりで破壊的変更が多い。
+**爆発時のフォールバック**: 修正が 10 ファイルを超えるなら、6 で一度止まって
+`Round 6B-A`（5 → 6）と `Round 6B-B`（6 → 7）に分割して 2 PR にする。
+最初の試行で統合する価値がある、という判断での 1 PR。
 
 ---
 
-## Round 8 — `react` / `react-dom` 18 → 19（1 PR）
+## Round 7 — `react` / `react-dom` 18 → 19（1 PR）
 
 **目的**: React 19 安定版へ。
 
@@ -243,18 +272,18 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 
 ---
 
-## Round 9 — `recharts` 2.15 → 3.10（**2 PR に分割**）
+## Round 8 — `recharts` 2.15 → 3.10（**2 PR に分割**）
 
 メジャーアップで ResponsiveContainer / LineChart 等の API が変わっている。
 **触るコンポーネントが `GraphContainer.tsx` 1 ファイル**だが、変更点が多い
 場合は **2 PR** に分ける。
 
-### Round 9a: `recharts` 2.15 → 3.0（または最新 3.x に直接ジャンプ）
+### Round 8a: `recharts` 2.15 → 3.0（または最新 3.x に直接ジャンプ）
 
 - `package.json`: `"recharts": "^3.10.1"`
 - `src/ui/organisms/house-temperature/GraphContainer.tsx` の import 修正・型修正
 
-### Round 9b: 描画確認 + 微修正（必要なら）
+### Round 8b: 描画確認 + 微修正（必要なら）
 
 - dev server で実際にグラフが描画されるか確認
 - 必要なら `width` / `height` の調整や `ResponsiveContainer` の props 修正
@@ -264,7 +293,7 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 
 ---
 
-## Round 10 — CI 強化: `yarn build` を CI に追加（`PLAN.md` Round 6 と同内容・1 PR）
+## Round 9 — CI 強化: `yarn build` を CI に追加（`PLAN.md` Round 6 と同内容・1 PR）
 
 **目的**: 現状 CI は `yarn lint && yarn typecheck` までしか走らせていない。
 ビルドの正しさは `yarn build` まで回して初めて保証されるので、CI に追加する。
@@ -283,7 +312,7 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 
 ---
 
-## Round 11 — CI の Node 24 化（1 PR）
+## Round 10 — CI の Node 24 化（1 PR）
 
 **目的**: `Dockerfile`（`node:24-alpine`）と CI の Node バージョンを揃える。
 
@@ -300,9 +329,9 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 
 ---
 
-## Round 12 — Renovate 導入（`PLAN.md` Round 7 と同内容・1 PR）
+## Round 11 — Renovate 導入（`PLAN.md` Round 7 と同内容・1 PR）
 
-**目的**: 以降の追従作業を自動化する。**手動ラウンド 1〜11 が完了してから**導入する。
+**目的**: 以降の追従作業を自動化する。**手動ラウンド 1〜10 が完了してから**導入する。
 
 **触るファイル**: `.github/renovate.json`（`dependabot.yml` ではなく Renovate 推奨）
 
@@ -334,14 +363,14 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 - [x] Round 4:  webpack-dev-server 5 → 6
 - [x] Round 5a: webpack-cli 5 → 6
 - [x] Round 5b: webpack-cli 6 → 7
-- [ ] Round 6:  TypeScript 5 → 6
-- [ ] Round 7:  TypeScript 6 → 7 + @typescript/native-preview 更新
-- [ ] Round 8:  React 18 → 19
-- [ ] Round 9a: recharts 2 → 3
-- [ ] Round 9b: recharts 描画確認・微修正
-- [ ] Round 10: CI に `yarn build` 追加
-- [ ] Round 11: CI の Node 24 化
-- [ ] Round 12: Renovate 導入
+- [ ] Round 6A: ts-loader → esbuild-loader
+- [ ] Round 6B: TypeScript 5 → 7 + @typescript/native-preview 更新（統合）
+- [ ] Round 7:  React 18 → 19
+- [ ] Round 8a: recharts 2 → 3
+- [ ] Round 8b: recharts 描画確認・微修正
+- [ ] Round 9:  CI に `yarn build` 追加
+- [ ] Round 10: CI の Node 24 化
+- [ ] Round 11: Renovate 導入
 
 ## 各ラウンド共通の検証手順
 

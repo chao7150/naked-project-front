@@ -15,10 +15,10 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: {
-          loader: "ts-loader",
+          loader: "esbuild-loader",
           options: {
-            configFile: "tsconfig.json",
-            transpileOnly: true,
+            loader: "tsx",
+            target: "es2022",
           },
         },
       },
