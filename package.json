@@ -25,7 +25,7 @@
     "@typescript/native-preview": "^7.0.0-dev.20260504.1",
     "css-loader": "^7.1.4",
     "style-loader": "^4.0.0",
-    "ts-loader": "^6.2.1",
+    "ts-loader": "^9.6.0",
     "typescript": "^5.7.2",
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4",
