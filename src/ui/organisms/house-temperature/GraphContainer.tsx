@@ -33,11 +33,11 @@ export const GraphContainer = ({
   referenceProps,
 }: GraphContainerProps) => {
   const formatTooltip = useCallback(
-    (value: number | string | Array<number | string>) => {
+    (value: number | string | readonly (number | string)[] | undefined) => {
       if (typeof value === "number") {
         return value.toPrecision(4);
       }
-      return value;
+      return value ?? "";
     },
     [],
   );
