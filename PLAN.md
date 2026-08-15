@@ -138,7 +138,7 @@ strict 有効化時に `React.X` の残骸を一掃してから型検査に入�
 
 - [x] Round 1: 副作用ゼロの整理
 - [x] Round 2 PR-A: `setInterval` のクリーンアップ漏れ修正（`GraphList.tsx`）
-- [ ] Round 2 PR-B: `Date` のミューテーション修正（`fetchData.ts`）
+- [x] Round 2 PR-B: `Date` のミューテーション修正（`fetchData.ts`）
 - [ ] Round 3: React 表記の現代化
 - [ ] Round 4: ts-loader 更新
 - [ ] Round 5: strict: true 化

@@ -1,11 +1,14 @@
 import { API_ENDPOINT, API_HOST } from "./consts";
 
 export async function fetchByDate<T>(date: Date): Promise<T> {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
   const url = new URL(
     `${API_ENDPOINT}?start=${encodeURIComponent(
-      new Date(date.setHours(0, 0, 0, 0)).toISOString(),
+      new Date(year, month, day, 0, 0, 0, 0).toISOString(),
     )}&end=${encodeURIComponent(
-      new Date(date.setHours(23, 59, 59, 999)).toISOString(),
+      new Date(year, month, day, 23, 59, 59, 999).toISOString(),
     )}`,
     API_HOST,
   );
