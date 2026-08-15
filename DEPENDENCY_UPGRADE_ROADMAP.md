@@ -374,7 +374,7 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 - [x] Round 8a: recharts 2 → 3
 - [ ] Round 8b: recharts 描画確認・微修正
 - [ ] Round 9:  CI に `yarn build` 追加
-- [ ] Round 10: CI の Node 24 化
+- [x] Round 10: CI の Node 24 化
 - [ ] Round 11: Renovate 導入
 
 ## 各ラウンド共通の検証手順
