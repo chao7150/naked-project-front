@@ -8,7 +8,7 @@
     "lib": ["ES2024", "DOM"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "strictNullChecks": true,
+    "strict": true,
     "skipLibCheck": true
   },
   "include": ["src/**/*"]
