@@ -19,7 +19,7 @@
     "temporal-polyfill": "^0.3.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
+    "@biomejs/biome": "^2.5.8",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "@typescript/native-preview": "^7.0.0-dev.20260504.1",
