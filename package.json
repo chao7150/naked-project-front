@@ -4,7 +4,7 @@
   "scripts": {
     "build": "yarn build:client && cp src/ui/index.html dist/index.html",
     "build:client": "webpack --config webpack.config.js",
-    "start:client": "webpack-dev-server --config webpack.config.js --open --hot",
+    "start:client": "webpack-dev-server --config webpack.config.js",
     "typecheck": "tsgo --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
@@ -29,7 +29,7 @@
     "typescript": "^5.9.3",
     "webpack": "^5.109.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.1.0"
+    "webpack-dev-server": "^6.0.0"
   },
   "packageManager": "yarn@4.2.2"
 }

@@ -32,6 +32,7 @@ module.exports = {
   devServer: {
     static: `${__dirname}/dist`,
     port: 3001,
+    open: true,
     client: {
       overlay: false,
     },
