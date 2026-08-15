@@ -1,8 +1,6 @@
-[![Build Status](https://drone.chao.tokyo/api/badges/chao7150/house-temperature-web/status.svg)](https://drone.chao.tokyo/chao7150/house-temperature-web)
+# naked-project-front
 
-# house-temperature-web
-
-- Front application of [house-temperature-server](https://github.com/chao7150/house-temperature-server)
+- Front application scaffolded with React + TypeScript + webpack
 
 # develop
 
