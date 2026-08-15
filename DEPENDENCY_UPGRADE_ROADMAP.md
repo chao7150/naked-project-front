@@ -369,7 +369,7 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 - [x] Round 5a: webpack-cli 5 → 6
 - [x] Round 5b: webpack-cli 6 → 7
 - [x] Round 6A: ts-loader → esbuild-loader
-- [ ] Round 6B: TypeScript 5 → 7 + @typescript/native-preview 更新（統合）
+- [x] Round 6B: TypeScript 5 → 7（native-preview 撤去、typecheck を tsc に切替）
 - [ ] Round 7:  React 18 → 19
 - [ ] Round 8a: recharts 2 → 3
 - [ ] Round 8b: recharts 描画確認・微修正
