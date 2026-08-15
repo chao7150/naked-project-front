@@ -4,8 +4,6 @@ services:
   web:
     build: .
     container_name: house-temperature-web
-    depends_on:
-      - house-temperature-web-redis
     ports:
       - "3000:3000"
     environment: 

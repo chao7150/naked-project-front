@@ -7,7 +7,7 @@
 ```
 yarn
 yarn build:client
-yarn debug:server
+yarn start:client
 ```
 
 # Author

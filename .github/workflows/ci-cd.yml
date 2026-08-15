@@ -32,6 +32,9 @@ jobs:
       - name: Type check
         run: corepack yarn typecheck
 
+      - name: Build
+        run: corepack yarn build
+
   docker-build-and-push:
     name: Build and Push to ECR
     needs: test
