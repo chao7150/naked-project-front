@@ -25,7 +25,8 @@ export const GraphList: React.FC = () => {
       setData([...yesterdayResult, ...todayResult].slice(-12 * 24));
     };
     fetch();
-    setInterval(fetch, 5 * 60 * 1000);
+    const timerId = setInterval(fetch, 5 * 60 * 1000);
+    return () => clearInterval(timerId);
   }, []);
 
   const standardPressure = 1013;
