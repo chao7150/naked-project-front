@@ -224,7 +224,7 @@ Round 9 なので、CI フィードバックは PR レビュー時のローカ�
 TypeScript 7.0 系に追従させる。
 
 **触るファイル**:
-- `package.json`（`"typescript": "^7.0.2"`、`"@typescript/native-preview": "7.0.0-dev.20260707.2"` 等の dev タグ固定）
+- `package.json`（`"typescript": "^7.0.2"` への更新、`@typescript/native-preview` 削除、`"typecheck"` を `tsc --noEmit` に変更）
 - アプリコード（型エラーが出たら最小修正）
 
 **前提条件**: Round 6A で loader を esbuild-loader に切替済みであること。
@@ -235,8 +235,13 @@ ts-loader 経由で TypeScript 7 を動かそうとすると `ts.sys` 削除で�
 - TS 6/7 で `strict` まわりの挙動が一部変わっている。
   `tsconfig.json` の `target: "ES2022"` / `lib: ["ES2024", "DOM"]` は据え置き想定。
 - esbuild-loader は TypeScript の構文解釈しかしないため、**アプリコードの
-  型エラーは esbuild-loader ではなく `tsgo`（typecheck）で検出される**。
+  型エラーは esbuild-loader ではなく `tsc`（typecheck）で検出される**。
   `yarn typecheck` が green であれば OK。
+- TypeScript 7 では **`tsc` 自体が native（Go）実装**になっている
+  （`node_modules/@typescript/typescript-linux-x64/lib/tsc` は Go ビルド ELF）。
+  そのため `@typescript/native-preview`（`tsgo`）は **冗長** になり、
+  本ラウンドで削除する。`package.json` の `"typecheck"` も `tsgo --noEmit` から
+  `tsc --noEmit` に切り替える。
 
 **検証**: `yarn typecheck && yarn build && yarn start:client --no-open`
 
@@ -363,7 +368,7 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 - [x] Round 4:  webpack-dev-server 5 → 6
 - [x] Round 5a: webpack-cli 5 → 6
 - [x] Round 5b: webpack-cli 6 → 7
-- [ ] Round 6A: ts-loader → esbuild-loader
+- [x] Round 6A: ts-loader → esbuild-loader
 - [ ] Round 6B: TypeScript 5 → 7 + @typescript/native-preview 更新（統合）
 - [ ] Round 7:  React 18 → 19
 - [ ] Round 8a: recharts 2 → 3
