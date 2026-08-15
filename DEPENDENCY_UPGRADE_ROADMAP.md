@@ -370,7 +370,7 @@ autobatching / concurrent rendering まわりで挙動が変わる可能性は�
 - [x] Round 5b: webpack-cli 6 → 7
 - [x] Round 6A: ts-loader → esbuild-loader
 - [x] Round 6B: TypeScript 5 → 7（native-preview 撤去、typecheck を tsc に切替）
-- [ ] Round 7:  React 18 → 19
+- [x] Round 7:  React 18 → 19
 - [ ] Round 8a: recharts 2 → 3
 - [ ] Round 8b: recharts 描画確認・微修正
 - [ ] Round 9:  CI に `yarn build` 追加
