@@ -1,6 +1,4 @@
-import type React from "react";
-
-export const Header: React.FunctionComponent = () => {
+export const Header = () => {
   return (
     <header>
       <h1>ちゃおネイキッドプロジェクト</h1>

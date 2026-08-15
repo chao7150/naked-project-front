@@ -1,4 +1,4 @@
-import React from "react";
+import { useCallback } from "react";
 import {
   CartesianGrid,
   Line,
@@ -25,14 +25,14 @@ export interface GraphContainerProps {
   referenceProps?: ReferenceProps[];
 }
 
-export const GraphContainer: React.FunctionComponent<GraphContainerProps> = ({
+export const GraphContainer = ({
   title,
   data,
   dataKey,
   domain,
   referenceProps,
 }: GraphContainerProps) => {
-  const formatTooltip = React.useCallback(
+  const formatTooltip = useCallback(
     (value: number | string | Array<number | string>) => {
       if (typeof value === "number") {
         return value.toPrecision(4);

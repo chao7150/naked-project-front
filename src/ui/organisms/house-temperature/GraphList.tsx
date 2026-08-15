@@ -1,11 +1,10 @@
-import type React from "react";
 import { useEffect, useState } from "react";
 import { Temporal } from "temporal-polyfill";
 import type { WeatherData } from "../../../domain/WeatherData";
 import { fetchTodayAndYesterday } from "../../../infra/fetchData";
 import { GraphContainer } from "./GraphContainer";
 
-export const GraphList: React.FC = () => {
+export const GraphList = () => {
   const [data, setData] = useState<WeatherData[]>([]);
   useEffect(() => {
     const fetch = async (): Promise<void> => {
