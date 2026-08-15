@@ -23,6 +23,7 @@ export interface GraphContainerProps {
   dataKey: keyof WeatherData;
   domain: [number, number];
   referenceProps?: ReferenceProps[];
+  yAxisTickFormatter?: (value: number) => string;
 }
 
 export const GraphContainer = ({
@@ -31,11 +32,12 @@ export const GraphContainer = ({
   dataKey,
   domain,
   referenceProps,
+  yAxisTickFormatter = (value: number) => Math.round(value).toString(),
 }: GraphContainerProps) => {
   const formatTooltip = useCallback(
     (value: number | string | readonly (number | string)[] | undefined) => {
       if (typeof value === "number") {
-        return value.toPrecision(4);
+        return value.toFixed(2);
       }
       return value ?? "";
     },
@@ -49,12 +51,18 @@ export const GraphContainer = ({
         <LineChart data={data} syncId="chao">
           <Line type="monotone" dataKey={dataKey} />
           <XAxis dataKey="datetime" interval={59} />
-          <YAxis domain={domain} />
+          <YAxis domain={domain} tickFormatter={yAxisTickFormatter} />
           <CartesianGrid />
           {referenceProps?.map((props) => {
             return <ReferenceLine {...props} key={props.label} />;
           })}
-          <Tooltip formatter={formatTooltip} />
+          <Tooltip
+            formatter={formatTooltip}
+            contentStyle={{
+              backgroundColor: "var(--bg-color)",
+              borderColor: "var(--text-color)",
+            }}
+          />
         </LineChart>
       </ResponsiveContainer>
     </section>

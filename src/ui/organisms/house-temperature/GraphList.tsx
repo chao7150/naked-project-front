@@ -30,8 +30,8 @@ export const GraphList = () => {
 
   const standardPressure = 1013;
   const pressureList = data.map(({ pressure }) => pressure);
-  const minPressure = Math.min(standardPressure, ...pressureList);
-  const maxPressure = Math.max(standardPressure, ...pressureList);
+  const minPressure = Math.floor(Math.min(standardPressure, ...pressureList));
+  const maxPressure = Math.ceil(Math.max(standardPressure, ...pressureList));
   return (
     <>
       <h2>ちゃおハウスの天気</h2>
